@@ -1,33 +1,36 @@
-# Desafio-Bandeira-cartoes
-#  Reconhecendo Bandeiras de Cartões
+function verificarBandeira(numeroCartao) {
+    const bandeiras = [
+        { nome: "Visa", prefixos: ["4"], tamanho: [13, 16] },
+        { nome: "MasterCard", prefixos: ["51", "52", "53", "54", "55", "2221", "2720"], tamanho: [16] },
+        { nome: "American Express", prefixos: ["34", "37"], tamanho: [15] },
+        { nome: "Elo", prefixos: ["401178", "438935", "451416", "5090", "6277", "6362"], tamanho: [16] },
+        { nome: "Hipercard", prefixos: ["3841", "6062", "6370"], tamanho: [13, 16, 19] },
+        { nome: "Diners Club", prefixos: ["300", "301", "302", "303", "304", "305", "36", "38"], tamanho: [14] },
+        { nome: "Discover", prefixos: ["6011", "622126", "622925", "644", "645", "646", "647", "648", "649", "65"], tamanho: [16] },
+        { nome: "Aura", prefixos: ["50"], tamanho: [16] },
+    ];
 
-Este projeto tem como objetivo identificar automaticamente a bandeira de um cartão de crédito ou débito com base no número fornecido. A identificação é feita a partir dos primeiros dígitos do cartão, conhecidos como BIN (Bank Identification Number).
+    // Remove espaços ou traços do número do cartão
+    const numeroLimpo = numeroCartao.replace(/[\s-]/g, "");
 
-## 🚀 Tecnologias Utilizadas
+    for (const bandeira of bandeiras) {
+        // Verifica se o tamanho do número é válido para a bandeira
+        if (!bandeira.tamanho.includes(numeroLimpo.length)) {
+            continue;
+        }
 
-- Python 3.x
-- Expressões Regulares (Regex)
-- (Se aplicável) Bibliotecas auxiliares como `re`, `tkinter`, `Flask`, etc.
+        // Verifica se o prefixo do número corresponde a algum prefixo da bandeira
+        for (const prefixo of bandeira.prefixos) {
+            if (numeroLimpo.startsWith(prefixo)) {
+                return bandeira.nome;
+            }
+        }
+    }
 
-## 📦 Funcionalidades
+    return "Bandeira desconhecida";
+}
 
-- Identifica as principais bandeiras:
-  - Visa
-  - MasterCard
-  - American Express
-  - Elo
-  - Hipercard
-  - Discover
-  - Diners Club
-  - JCB
-  - Outras (personalizável)
-- Entrada: número do cartão (ou apenas os primeiros dígitos)
-- Saída: nome da bandeira correspondente
-
-## 📋 Como Usar
-
-### 1. Clonar o Repositório
-
-```bash
-git clone https://github.com/Wilton1985/Desafio-Bandeira-cartoes.git
-cd nome-do-repositorio
+// Exemplo de uso
+const numeroCartao = "4011 7812 3456 7890"; // Número de exemplo
+const bandeira = verificarBandeira(numeroCartao);
+console.log(`A bandeira do cartão é: ${bandeira}`);
